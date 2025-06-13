@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "phaserstorybookrepro": {
+    "storybookrepro": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -11,19 +11,24 @@
         }
       },
       "root": "",
-      "sourceRoot": "src",
+      "sourceRoot": "",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/phaserstorybookrepro",
+            "outputPath": "dist/storybookrepro",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src"
+              ]
+            },
             "inlineStyleLanguage": "scss",
             "assets": [
               {
@@ -32,42 +37,45 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "fonts": {
+                  "inline": false
                 },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
                 }
-              ],
-              "outputHashing": "all"
+              },
+              "sourceMap": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "phaserstorybookrepro:build:production"
+              "buildTarget": "storybookrepro:build:production"
             },
             "development": {
-              "buildTarget": "phaserstorybookrepro:build:development"
+              "buildTarget": "storybookrepro:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -91,16 +99,16 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles/styles.scss"
             ],
             "scripts": []
           }
         },
         "storybook": {
-          "builder": "@storybook/angular:start-storybook",
+          "builder": "@analogjs/storybook-angular:start-storybook",
           "options": {
             "configDir": ".storybook",
-            "browserTarget": "phaserstorybookrepro:build",
+            "browserTarget": "storybookrepro:build",
             "compodoc": true,
             "compodocArgs": [
               "-e",
@@ -108,20 +116,26 @@
               "-d",
               "."
             ],
+            "styles": [
+              "src/styles/styles.scss"
+            ],
             "port": 6006
           }
         },
         "build-storybook": {
-          "builder": "@storybook/angular:build-storybook",
+          "builder": "@analogjs/storybook-angular:build-storybook",
           "options": {
             "configDir": ".storybook",
-            "browserTarget": "phaserstorybookrepro:build",
+            "browserTarget": "storybookrepro:build",
             "compodoc": true,
             "compodocArgs": [
               "-e",
               "json",
               "-d",
               "."
+            ],
+            "styles": [
+              "src/styles/styles.scss"
             ],
             "outputDir": "storybook-static"
           }

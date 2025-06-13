@@ -1,0 +1,3 @@
+@function multiply-size($size, $factor: 4) {
+  @return $size * $factor;
+}
